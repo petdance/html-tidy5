@@ -1,4 +1,4 @@
-#!perl -Tw
+#!perl -T
 
 use 5.010001;
 use strict;
@@ -14,6 +14,8 @@ isa_ok( $tidy, 'HTML::Tidy5' );
 $tidy->clean( $html );
 isa_ok( $tidy, 'HTML::Tidy5' );
 pass( 'Cleaned OK' );
+
+exit 0;
 
 __DATA__
 <form action="http://www.alternation.net/cobra/index.pl">
