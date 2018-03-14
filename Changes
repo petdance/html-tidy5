@@ -1,0 +1,14 @@
+Revision history for Perl extension HTML::Tidy5.
+
+
+5.00_01 Tue Mar 13 11:54:52 CDT 2018
+====================================
+Uses latest tidy-html5.  No longer needs tidyp.  Requires Perl 5.10.1.
+
+This is the first beta release.  It has not been tested by anyone out in the world.
+
+[ENHANCEMENTS]
+The tidy-html5 library validates HTML5.
+
+[INCOMPATIBILITIES WITH HTML::Tidy]
+Removed the overloading of HTML::Tidy::Message objects.  Now you have to explicitly call ->as_string.
