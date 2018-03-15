@@ -20,6 +20,8 @@ Almost everything is an accessor.
 
 Create an object.  It's not very exciting.
 
+C<$file> can be C<undef> or an empty string, in which case it will not appear in messages.
+
 =cut
 
 sub new {
@@ -46,39 +48,6 @@ sub new {
     return $self;
 }
 
-=head2 where()
-
-Returns a formatted string that describes where in the file the
-error has occurred.
-
-For example,
-
-    (14:23)
-
-for line 14, column 23.
-
-The terrible thing about this function is that it's both a plain
-ol' formatting function as in
-
-    my $str = where( 14, 23 );
-
-AND it's an object method, as in:
-
-    my $str = $error->where();
-
-I don't know what I was thinking when I set it up this way, but
-it's bad practice.
-
-=cut
-
-sub where {
-    my $self = shift;
-
-    return '-' unless $self->line && $self->column;
-
-    return sprintf( '(%d:%d)', $self->line, $self->column );
-}
-
 =head2 as_string()
 
 Returns a nicely-formatted string for printing out to stdout or some similar user thing.
@@ -94,8 +63,18 @@ sub as_string {
         3 => 'Error',
     );
 
-    return sprintf( '%s %s %s: %s',
-        $self->file, $self->where, $strings{$self->type}, $self->text );
+    my $msg = $strings{$self->type} . ': ' . $self->text;
+
+    if ( $self->line && $self->column ) {
+        $msg = sprintf( '(%d:%d) %s', $self->line, $self->column, $msg );
+    }
+
+    my $file = $self->file // '';
+    if ( $file ne '' ) {
+        $msg = "$file $msg";
+    }
+
+    return $msg;
 }
 
 =head2 file()
@@ -133,7 +112,7 @@ sub text    { my $self = shift; return $self->{_text} }
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2005-2017 Andy Lester.
+Copyright 2005-2018 Andy Lester.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the Artistic License v2.0.

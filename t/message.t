@@ -4,12 +4,12 @@ use 5.010001;
 use warnings;
 use strict;
 
-use Test::More tests => 4;
+use Test::More tests => 8;
 
 use HTML::Tidy5;
 use HTML::Tidy5::Message;
 
-WITH_LINE_NUMBERS: {
+WITH_LINE_NUMBERS_WITH_FILENAME: {
     my $error = HTML::Tidy5::Message->new( 'foo.pl', TIDY_ERROR, 2112, 5150, 'Blah blah' );
     isa_ok( $error, 'HTML::Tidy5::Message' );
 
@@ -24,7 +24,22 @@ WITH_LINE_NUMBERS: {
     _match_up( $error, \%expected, 'With line numbers' );
 }
 
-WITHOUT_LINE_NUMBERS: {
+WITH_LINE_NUMBERS_WITHOUT_FILENAME: {
+    my $error = HTML::Tidy5::Message->new( undef, TIDY_ERROR, 2112, 5150, 'Blah blah' );
+    isa_ok( $error, 'HTML::Tidy5::Message' );
+
+    my %expected = (
+        file        => undef,
+        type        => TIDY_ERROR,
+        line        => 2112,
+        column      => 5150,
+        text        => 'Blah blah',
+        as_string   => '(2112:5150) Error: Blah blah',
+    );
+    _match_up( $error, \%expected, 'With line numbers' );
+}
+
+WITHOUT_LINE_NUMBERS_WITH_FILENAME: {
     my $error = HTML::Tidy5::Message->new( 'bar.pl', TIDY_WARNING, undef, undef, 'Blah blah' );
     isa_ok( $error, 'HTML::Tidy5::Message' );
 
@@ -34,10 +49,26 @@ WITHOUT_LINE_NUMBERS: {
         line        => 0,
         column      => 0,
         text        => 'Blah blah',
-        as_string   => 'bar.pl - Warning: Blah blah',
+        as_string   => 'bar.pl Warning: Blah blah',
     );
     _match_up( $error, \%expected, 'Without line numbers' );
 }
+
+WITHOUT_LINE_NUMBERS_WITHOUT_FILENAME: {
+    my $error = HTML::Tidy5::Message->new( undef, TIDY_WARNING, undef, undef, 'Blah blah' );
+    isa_ok( $error, 'HTML::Tidy5::Message' );
+
+    my %expected = (
+        file        => undef,
+        type        => TIDY_WARNING,
+        line        => 0,
+        column      => 0,
+        text        => 'Blah blah',
+        as_string   => 'Warning: Blah blah',
+    );
+    _match_up( $error, \%expected, 'Without line numbers' );
+}
+
 
 sub _match_up {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
