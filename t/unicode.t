@@ -33,8 +33,7 @@ subtest 'utf8 testing' => sub {
     my $clean = $tidy->clean( $html );
     ok(utf8::is_utf8($clean), 'cleaned output is also unicode');
 
-    $clean =~ s/"HTML Tidy.+w3\.org"/"Tidy"/;
-    $clean =~ s/"(HTML Tidy|tidy).+w3\.org"/"Tidy"/;
+    $clean = _remove_specificity( $clean );
     is($clean, $reference, q{Cleanup didn't break anything});
 
     my @messages = $tidy->messages;
@@ -59,18 +58,26 @@ subtest 'Try send bytes to clean method.' => sub {
     ok(!utf8::is_utf8($encoded_html), 'html is row bytes');
     my $clean = $tidy->clean( $encoded_html );
     ok(utf8::is_utf8($clean), 'but cleaned output is string');
-    $clean =~ s/"HTML Tidy.+w3\.org"/"Tidy"/;
-    $clean =~ s/"(HTML Tidy|tidy).+w3\.org"/"Tidy"/;
+    $clean = _remove_specificity( $clean );
     is($clean, $reference, q{Cleanup didn't break anything});
 };
 
 exit 0;
 
+
+sub _remove_specificity {
+    my $clean = shift;
+
+    $clean =~ s/HTML Tidy for HTML5 for \w+ version \d+\.\d+\.\d+/TIDY/;
+
+    return $clean;
+}
+
 __DATA__
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
 <html>
 <head>
-<meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.6.0">
+<meta name="generator" content="TIDY">
 <title>日本語のホムページ</title>
 </head>
 <body>
