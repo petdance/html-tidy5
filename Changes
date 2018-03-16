@@ -3,7 +3,7 @@ Revision history for Perl extension HTML::Tidy5.
 The HTML::Tidy5 module is an HTML5-compatible upgrade from the HTML::Tidy module.
 
 
-0.03
+0.03    Fri Mar 16 09:23:21 CDT 2018
 ====================================
 3rd beta.  More test fixes.
 
