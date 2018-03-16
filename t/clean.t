@@ -9,6 +9,11 @@ use Test::More tests => 3;
 
 use HTML::Tidy5;
 
+use lib 't';
+
+use TidyTestUtils;
+
+
 my $tidy = HTML::Tidy5->new( { wrap => 0 } );
 isa_ok( $tidy, 'HTML::Tidy5' );
 
@@ -18,21 +23,23 @@ throws_ok {
 } qr/\Q$expected_pattern\E/,
 'clean() croaks when not given a string or list of strings';
 
-like(
-    $tidy->clean(''),
-    _expected_empty_html(),
-    '$tidy->clean("") returns empty HTML document',
-);
+my $actual = $tidy->clean('');
+$actual = remove_specificity( $actual );
 
-sub _expected_empty_html {
-    return qr{<!DOCTYPE html>
+my $expected_empty_html = <<'HERE';
+<!DOCTYPE html>
 <html>
 <head>
-<meta name="generator" content="HTML Tidy for HTML5 for Linux version \d+\.\d+\.\d+">
+<meta name="generator" content="TIDY">
 <title></title>
 </head>
 <body>
 </body>
 </html>
-};
-}
+HERE
+
+is( $actual, $expected_empty_html, '$tidy->clean("") returns empty HTML document' );
+
+
+done_testing();
+exit 0;
