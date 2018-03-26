@@ -8,6 +8,7 @@ use Test::More tests => 2;
 
 use HTML::Tidy5;
 use HTML::Tidy5::Message;
+use Test::HTML::Tidy5;
 
 pass( 'Modules loaded' );
 
