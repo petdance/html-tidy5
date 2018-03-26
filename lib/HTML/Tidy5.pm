@@ -13,11 +13,11 @@ HTML::Tidy5 - HTML validation in a Perl object
 
 =head1 VERSION
 
-Version 1.00
+Version 1.01_01
 
 =cut
 
-our $VERSION = '1.00';
+our $VERSION = '1.01_01';
 
 =head1 SYNOPSIS
 

@@ -4,12 +4,11 @@ The HTML::Tidy5 module is an HTML5-compatible upgrade from the HTML::Tidy
 module.
 
 
-NEXT
+1.01_01 Mon Mar 26 16:37:13 CDT 2018
 ====================================
 [ENHANCEMENTS]
 Add Test::HTML::Tidy5 and the html_tidy_ok() function for testing HTML
-in your tests.
-
+in your .t files.
 
 [FIXES]
 Fixed test failure.
