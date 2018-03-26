@@ -8,6 +8,10 @@ use Test::More tests => 3;
 
 use HTML::Tidy5;
 
+use lib 't';
+
+use TidyTestUtils;
+
 my $args = { newline => 'LF', wrap => 0 };
 my $tidy = HTML::Tidy5->new($args);
 isa_ok( $tidy, 'HTML::Tidy5' );
@@ -26,7 +30,7 @@ my @messages = $tidy->messages( $clean );
 
 is_deeply( \@messages, [], q{The cleaned stuff shouldn't have any errors} );
 
-$clean =~ s/"(HTML Tidy|tidy).+w3\.org"/"Tidy"/;
+$clean = remove_specificity( $clean );
 
 my $expected = do { local $/ = undef; <DATA> };
 is( $clean, $expected, 'Cleaned up properly' );
@@ -38,7 +42,7 @@ __DATA__
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.6.0">
+<meta name="generator" content="TIDY">
 <title></title>
 </head>
 <body>

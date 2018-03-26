@@ -1,6 +1,7 @@
-# HTML::Tidy5
-
+HTML::Tidy5
+===========
 HTML::Tidy5 is an HTML checker in a handy dandy object.
+
 
 PREREQUISITES
 =============

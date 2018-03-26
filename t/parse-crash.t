@@ -20,9 +20,9 @@ $tidy->ignore( type => TIDY_INFO );
 $tidy->clean( $html );
 
 my @expected = split( /\n/, <<'HERE' );
- (15:1) Warning: <table> lacks "summary" attribute
- (32:1) Warning: <table> lacks "summary" attribute
- (40:1) Warning: <table> lacks "summary" attribute
+(15:1) Warning: <table> lacks "summary" attribute
+(32:1) Warning: <table> lacks "summary" attribute
+(40:1) Warning: <table> lacks "summary" attribute
 HERE
 my @mess = map { $_ ? $_->as_string() : undef } $tidy->messages();
 is_deeply( \@mess, \@expected, 'Messages match' );

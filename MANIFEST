@@ -38,5 +38,7 @@ t/version.t
 t/wordwrap.cfg
 t/wordwrap.t
 
+t/TidyTestUtils.pm
+
 xt/pod.t
 xt/pod-coverage.t
