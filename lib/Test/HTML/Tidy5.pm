@@ -1,5 +1,6 @@
 package Test::HTML::Tidy5;
 
+use 5.010001;
 use warnings;
 use strict;
 
@@ -92,6 +93,7 @@ sub html_tidy_ok {
         $TB->ok( 0, $name );
     }
     else {
+        $tidy->clear_messages();
         $tidy->parse( undef, $html );
 
         my @messages = $tidy->messages;
