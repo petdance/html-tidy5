@@ -4,10 +4,23 @@ use 5.010001;
 use warnings;
 use strict;
 
-use Test::More tests => 4;
+use Test::More tests => 5;
 
 use Test::Builder::Tester;
 use Test::HTML::Tidy5;
+
+
+subtest 'html_tidy_ok fails on undef' => sub {
+    plan tests => 1;
+
+    my $msg = 'Fails on undef';
+    test_out( "not ok 1 - $msg" );
+    test_fail( +2 );
+    test_diag( 'Error: html_tidy_ok() got undef' );
+    html_tidy_ok( undef, $msg );
+    test_test( $msg );
+};
+
 
 subtest 'html_tidy_ok without errors' => sub {
     plan tests => 1;
