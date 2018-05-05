@@ -8,9 +8,7 @@ use warnings;
 use ExtUtils::MakeMaker 6.48;
 use ExtUtils::Liblist;
 use Config;
-
-my $libs = $^O eq 'freebsd' ? '-ltidy5' : '-ltidy';
-my $inc = "-I. -I/usr/include/tidy -I/usr/local/include/tidy -I$Config{usrinc}/tidy";
+use Alien::Base::Wrapper qw/ Alien::TidyHTML5 !export /;
 
 if ( not eval { require LWP::Simple; 1; } ) {
     print <<'EOF';
@@ -48,9 +46,11 @@ my $parms = {
         },
     },
 
-    LIBS                => [$libs],
-    NEEDS_LINKING       => 1,
-    INC                 => $inc,
+    CONFIGURE_REQUIRES => {
+        'Alien::Base::Wrapper' => '0',
+        'Alien::TidyHTML5'     => '0',
+    },
+    Alien::Base::Wrapper->mm_args,
 
     EXE_FILES           => [qw(bin/webtidy5)],
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
