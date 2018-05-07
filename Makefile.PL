@@ -8,7 +8,6 @@ use warnings;
 use ExtUtils::MakeMaker 6.48;
 use ExtUtils::Liblist;
 use Config;
-use Alien::Base::Wrapper qw/ Alien::TidyHTML5 !export /;
 
 if ( not eval { require LWP::Simple; 1; } ) {
     print <<'EOF';
@@ -17,6 +16,57 @@ NOTE: It seems that you don't have LWP::Simple installed.
       The webtidy program will not be able to retrieve web pages.
 
 EOF
+}
+
+my @build;
+
+eval {
+
+    require Devel::CheckLib;
+    Devel::CheckLib->import('assert_lib');
+
+    my @dirs = qw(
+      /usr/local
+      /opt/local
+    );
+
+    my @libs = map "$_/lib",     @dirs;
+    my @incs = map "$_/include", @dirs;
+    my $name = $^O eq 'freebsd' ? 'tidy5' : 'tidy';
+
+    assert_lib(
+        lib     => $name,
+        header  => 'tidy.h',
+        libpath => [@libs],
+        incpath => [@incs],
+    );
+
+    @build = (
+        INC => join( ' ', ( map "-I$_", @incs ) ),
+        LIBS => join ' ',
+        ( map "-L$_", @libs ), "-l$name",
+    );
+
+};
+
+unless (@build) {
+
+    eval {
+        require Alien::Base::Wrapper;
+        Alien::Base::Wrapper->import(qw/ Alien::TidyHTML5 !export /);
+        require Alien::TidyHTML5;
+        Alien::TidyHTML5->import();
+    };
+
+    @build = (
+        CONFIGURE_REQUIRES => {
+            'Alien::Base::Wrapper' => '0',
+            'Alien::TidyHTML5'     => '0',
+        },
+    );
+
+    push @build, Alien::Base::Wrapper->mm_args unless $@;
+
 }
 
 my $parms = {
@@ -38,6 +88,15 @@ my $parms = {
     MIN_PERL_VERSION    => 5.010001,
     LICENSE             => 'artistic_2',
     META_MERGE => {
+        prereqs => {
+            configure => {
+                recommends => {
+                    'Devel::CheckLib'      => 0,
+                    'Alien::Base::Wrapper' => 0,
+                    'Alien::TidyHTML5'     => 0,
+                },
+            },
+        },
         resources => {
             license     => 'http://www.opensource.org/licenses/artistic-license-2.0.php',
             homepage    => 'http://github.com/petdance/html-tidy5',
@@ -45,13 +104,7 @@ my $parms = {
             repository  => 'http://github.com/petdance/html-tidy5',
         },
     },
-
-    CONFIGURE_REQUIRES => {
-        'Alien::Base::Wrapper' => '0',
-        'Alien::TidyHTML5'     => '0',
-    },
-    Alien::Base::Wrapper->mm_args,
-
+    @build,
     EXE_FILES           => [qw(bin/webtidy5)],
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'HTML-Tidy5-*' },
