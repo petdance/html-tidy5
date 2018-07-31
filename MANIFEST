@@ -24,6 +24,7 @@ t/ignore.t
 t/illegal-options.t
 t/levels.t
 t/message.t
+t/new-tags.t
 t/opt-00.t
 t/parse.t
 t/parse-errors.t
