@@ -1,3 +1,33 @@
+#!perl -T
+
+use 5.010001;
+use warnings;
+use strict;
+
+use Test::More tests => 3;
+
+use HTML::Tidy5;
+
+my $tidy = HTML::Tidy5->new;
+isa_ok( $tidy, 'HTML::Tidy5' );
+my $rc = $tidy->parse( '-', <DATA> );
+ok( $rc, 'Parsed OK' );
+
+my @expected = split /\n/, <<'HERE';
+- (11:9) Warning: <div> anchor "foo" already defined
+- (12:9) Warning: <span> anchor "foo" already defined
+- (15:9) Warning: <div> anchor "foo99" already defined
+- (16:9) Warning: <span> anchor "foo99" already defined
+- (26:9) Warning: <a> anchor "foo" already defined
+- (27:9) Warning: <a> anchor "foo" already defined
+- (28:9) Warning: <a> anchor "foo" already defined
+HERE
+chomp @expected;
+
+my @messages = map { $_->as_string } $tidy->messages;
+is_deeply( \@messages, \@expected, 'Messages match' );
+
+__DATA__
 <!DOCTYPE html>
 <html>
     <head>
