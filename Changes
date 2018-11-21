@@ -5,6 +5,13 @@ module.
 
 NEXT
 ====================================
+Now requires tidy library v5.7.17.
+
+[FIXES]
+Duplicate IDs would not be detected if the ID had an uppercase letter.
+This has been fixed in the underlying library 5.7.17.
+https://github.com/htacg/tidy-html5/issues/726
+
 [OTHER CHANGES]
 Underlying tidy-html5 library changed the behavior of the css_prefix
 argument. It used to add a hyphen, but now it doesn't.

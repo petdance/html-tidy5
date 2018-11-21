@@ -18,9 +18,16 @@ my @expected = split /\n/, <<'HERE';
 - (12:9) Warning: <span> anchor "foo" already defined
 - (15:9) Warning: <div> anchor "foo99" already defined
 - (16:9) Warning: <span> anchor "foo99" already defined
+- (19:9) Warning: <div> anchor "Foo" already defined
+- (20:9) Warning: <span> anchor "Foo" already defined
+- (23:9) Warning: <div> anchor "FOO" already defined
+- (24:9) Warning: <span> anchor "FOO" already defined
 - (26:9) Warning: <a> anchor "foo" already defined
 - (27:9) Warning: <a> anchor "foo" already defined
 - (28:9) Warning: <a> anchor "foo" already defined
+- (30:9) Warning: <a> anchor "FOO" already defined
+- (31:9) Warning: <a> anchor "FOO" already defined
+- (32:9) Warning: <a> anchor "FOO" already defined
 HERE
 chomp @expected;
 
