@@ -3,6 +3,12 @@ Revision history for Perl extension HTML::Tidy5.
 The HTML::Tidy5 module is an HTML5-compatible upgrade from the HTML::Tidy
 module.
 
+NEXT
+====================================
+[OTHER CHANGES]
+Underlying tidy-html5 library changed the behavior of the css_prefix
+argument. It used to add a hyphen, but now it doesn't.
+
 
 1.04    Fri Apr 20 16:45:00 CDT 2018
 ====================================
