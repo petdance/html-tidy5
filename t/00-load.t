@@ -10,10 +10,24 @@ use HTML::Tidy5;
 use HTML::Tidy5::Message;
 use Test::HTML::Tidy5;
 
-diag( "Testing HTML::Tidy5 $HTML::Tidy5::VERSION, tidy " . HTML::Tidy5->tidy_library_version() . ", Perl $], $^X" );
+my $ver = HTML::Tidy5->tidy_library_version;
 
-cmp_ok( HTML::Tidy5->tidy_library_version, 'ge', '5.6.0', 'HTML::Tidy5 requires version 5.6.0 or higher of the tidy-html5 library' );
+diag( "Testing HTML::Tidy5 $HTML::Tidy5::VERSION, tidy $ver, Perl $], $^X" );
 
 is( $Test::HTML::Tidy5::VERSION, $HTML::Tidy5::VERSION, 'HTML::Tidy5 and Test::HTML::Tidy5 versions must match' );
+
+# Do my own version matching.
+my @parts = split( /\./, $ver );
+my $ok = ( $parts[0] == 5 );
+if ( $ok ) {
+    if ( $parts[1] < 7 ) {
+        $ok = 0;
+    }
+    elsif ( $parts[1] == 7 ) {
+        $ok = ($parts[2] >= 17);
+    }
+}
+
+ok( $ok, "Must have tidy version 5.7.17 or higher but you have $ver" );
 
 exit 0;
