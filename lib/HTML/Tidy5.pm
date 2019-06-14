@@ -415,10 +415,6 @@ You can also look for information at:
 
 L<http://github.com/petdance/html-tidy5/issues>
 
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/HTML-Tidy5>
-
 =item * CPAN Ratings
 
 L<http://cpanratings.perl.org/d/HTML-Tidy5>
