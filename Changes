@@ -4,9 +4,11 @@ The HTML::Tidy5 module is an HTML5-compatible upgrade from the HTML::Tidy
 module.
 
 
-NEXT
+1.06
 ====================================
 Fixed a potentially failing test. Thanks, Pino Toscano.
+
+Fixed a failing test under macOS. (GH #13)
 
 
 1.04    Fri Apr 20 16:45:00 CDT 2018

@@ -17,7 +17,7 @@ our @EXPORT = @EXPORT_OK;
 sub remove_specificity {
     my $clean = shift;
 
-    $clean =~ s/HTML Tidy for HTML5 (for [\w\/\s]+ )?version \d+\.\d+\.\d+/TIDY/;
+    $clean =~ s/HTML Tidy for HTML5 (for .+ )?\bversion \d+\.\d+\.\d+/TIDY/;
 
     return $clean;
 }
