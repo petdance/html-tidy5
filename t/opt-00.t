@@ -43,7 +43,7 @@ my $expected =<<'EOD';
 </title>
 <style type="text/css">
 /*<![CDATA[*/
- span.myprefix-1 {color: blue}
+ span.myprefix1 {color: blue}
 /*]]>*/
 </style>
 </head>
@@ -52,7 +52,7 @@ my $expected =<<'EOD';
 
 <p>Here's some <b>ed and
 <br />
-eakfest MarkUp: <span class="myprefix-1">...</span></b></p>
+eakfest MarkUp: <span class="myprefix1">...</span></b></p>
 
 <p>
 </p>

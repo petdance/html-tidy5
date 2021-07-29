@@ -25,6 +25,7 @@ my $clean = $tidy->clean( $html );
 # then verify that it meets tidy's high standards
 $tidy = HTML::Tidy5->new($args); # reset messages;
 $tidy->ignore( type => TIDY_INFO );
+$tidy->ignore( text => qr/title/ );
 $clean = $tidy->clean($clean);
 my @messages = $tidy->messages( $clean );
 

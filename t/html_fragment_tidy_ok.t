@@ -44,11 +44,14 @@ HTML
     test_test( $msg );
 
     $msg = 'html_fragment_tidy_ok can handle it';
-    test_out( "ok 1 - $msg" );
+    test_out( "not ok 1 - $msg" );
+    test_fail( +4 );
+    test_diag( "Errors: $msg" );
+    test_diag( '(-2:9) Warning: blank \'title\' element' );
+    test_diag( '1 message on the page' );
     html_fragment_tidy_ok( $html, $msg );
     test_test( $msg );
 };
-
 
 subtest 'html_fragment_tidy_ok gets the same errors as html_tidy_ok' => sub {
     plan tests => 2;
@@ -76,11 +79,12 @@ HTML
     # Note that the line numbers are the same between html_tidy_ok and html_fragment_tidy_ok.
     $msg = 'html_fragment_tidy_ok on sloppy doc';
     test_out( "not ok 1 - $msg" );
-    test_fail( +5 );
+    test_fail( +6 );
     test_diag( "Errors: $msg" );
     test_diag( '(2:59) Warning: discarding unexpected </td>' );
+    test_diag( '(-2:9) Warning: blank \'title\' element' );
     test_diag( '(3:5) Warning: <img> lacks "alt" attribute' );
-    test_diag( '2 messages on the page' );
+    test_diag( '3 messages on the page' );
     html_fragment_tidy_ok( $html, $msg );
     test_test( $msg );
 };
