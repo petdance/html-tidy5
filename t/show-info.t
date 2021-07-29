@@ -31,7 +31,10 @@ subtest 'default constructor shows info' => sub {
     $tidy->parse( 'test', $html );
 
     messages_are( $tidy,
-        [ 'test (6:5) Info: value for attribute "id" missing quote marks' ]
+        [
+            'test (6:5) Info: value for attribute "id" missing quote marks',
+            'test (4:9) Warning: blank \'title\' element',
+        ]
     );
 };
 
@@ -43,7 +46,10 @@ subtest 'show_info => 1 shows info' => sub {
     $tidy->parse( 'test', $html );
 
     messages_are( $tidy,
-        [ 'test (6:5) Info: value for attribute "id" missing quote marks' ]
+        [
+            'test (6:5) Info: value for attribute "id" missing quote marks',
+            'test (4:9) Warning: blank \'title\' element',
+        ]
     );
 };
 
@@ -54,7 +60,11 @@ subtest 'show_info => 0' => sub {
     isa_ok( $tidy, 'HTML::Tidy5' );
     $tidy->parse( 'test', $html );
 
-    messages_are( $tidy, [] );
+    messages_are( $tidy,
+        [
+            'test (4:9) Warning: blank \'title\' element',
+        ]
+    );
 };
 
 exit 0;

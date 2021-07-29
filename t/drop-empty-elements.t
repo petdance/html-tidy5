@@ -32,11 +32,14 @@ subtest 'default constructor warns about empty spans' => sub {
     $tidy->parse( 'test', $html );
 
     messages_are( $tidy,
-        [ 'test (7:9) Warning: trimming empty <span>' ],
+        [
+            'test (4:9) Warning: blank \'title\' element',
+            'test (7:9) Warning: trimming empty <span>'
+        ],
     );
 };
 
-subtest 'drop_empty_elements => 1 gives message' => sub {
+subtest 'drop_empty_elements => 2 gives message' => sub {
     plan tests => 2;
 
     my $tidy = HTML::Tidy5->new( { drop_empty_elements => 1 } );
@@ -44,7 +47,10 @@ subtest 'drop_empty_elements => 1 gives message' => sub {
     $tidy->parse( 'test', $html );
 
     messages_are( $tidy,
-        [ 'test (7:9) Warning: trimming empty <span>' ],
+        [
+            'test (4:9) Warning: blank \'title\' element',
+            'test (7:9) Warning: trimming empty <span>'
+        ],
     );
 };
 
@@ -55,7 +61,11 @@ subtest 'drop_empty_elements => 0 gives no messages' => sub {
     isa_ok( $tidy, 'HTML::Tidy5' );
     $tidy->parse( 'test', $html );
 
-    messages_are( $tidy, [] );
+    messages_are( $tidy,
+        [
+            'test (4:9) Warning: blank \'title\' element',
+        ],
+    );
 };
 
 exit 0;

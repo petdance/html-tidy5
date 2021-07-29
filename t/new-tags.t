@@ -43,6 +43,7 @@ my @all_errors = (
     'test (14:28) Warning: discarding unexpected <newinline>',
     'test (14:49) Warning: discarding unexpected </newinline>',
     'test (16:9) Warning: discarding unexpected </otherblock>',
+    'test (4:9) Warning: blank \'title\' element',
 );
 
 
@@ -52,7 +53,6 @@ subtest 'default constructor warns about <nav> tag' => sub {
     my $tidy = HTML::Tidy5->new;
     isa_ok( $tidy, 'HTML::Tidy5' );
     $tidy->parse( 'test', $html );
-
     messages_are( $tidy, [ @all_errors ] );
 };
 
@@ -89,7 +89,7 @@ subtest 'Add new line and blocklevel' => sub {
     isa_ok( $tidy, 'HTML::Tidy5' );
     $tidy->parse( 'test', $html );
 
-    messages_are( $tidy, [], 'Quieted all errors' );
+    messages_are( $tidy, [grep { /element/ } @all_errors ], 'Quieted all errors' );
 };
 
 exit 0;

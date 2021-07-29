@@ -41,9 +41,19 @@ subtest 'html_tidy_ok without errors' => sub {
 </html>
 HTML
 
-    test_out( 'ok 1 - Called html_tidy_ok on full document' );
+    test_out( 'not ok 1 - Called html_tidy_ok on full document' );
+    test_fail( +4 );
+    test_diag( "Errors: Called html_tidy_ok on full document" );
+    test_diag( '(4:9) Warning: blank \'title\' element' );
+    test_diag( '1 message on the page' );
     html_tidy_ok( $html, 'Called html_tidy_ok on full document' );
     test_test( 'html_tidy_ok on full document works' );
+        # >     #   Failed test 'Called html_tidy_ok on full document'
+    # >     #   at t/html_tidy_ok.t line 45.
+    # >     # Errors: Called html_tidy_ok on full document
+    # >     # (4:9) Warning: blank 'title' element
+    # >     # 1 message on the page
+
 };
 
 
@@ -95,21 +105,25 @@ HTML
 
     # Default html_tidy_ok() complains about empty paragraph.
     test_out( 'not ok 1 - Empty paragraph' );
-    test_fail( +4 );
+    test_fail( +5 );
     test_diag( 'Errors: Empty paragraph' );
+    test_diag( '(4:9) Warning: blank \'title\' element' );
     test_diag( '(12:9) Warning: trimming empty <p>' );
-    test_diag( '1 message on the page' );
+    test_diag( '2 messages on the page' );
     html_tidy_ok( $html, 'Empty paragraph' );
     test_test( 'html_tidy_ok works on empty paragraph' );
 
     # Now make our own more relaxed Tidy object and it should pass.
     my $tidy = HTML::Tidy5->new( { drop_empty_elements => 0 } );
     isa_ok( $tidy, 'HTML::Tidy5' );
-    test_out( 'ok 1 - Relaxed tidy' );
+    test_out( 'not ok 1 - Relaxed tidy' );
+    test_fail( +4 );
+    test_diag( 'Errors: Relaxed tidy' );
+    test_diag( '(4:9) Warning: blank \'title\' element' );
+    test_diag( '1 message on the page' );
     html_tidy_ok( $tidy, $html, 'Relaxed tidy' );
     test_test( 'html_tidy_ok with user-specified tidy works' );
 };
-
 
 subtest 'Reusing a tidy object' => sub {
     plan tests => 7;
