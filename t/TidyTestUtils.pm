@@ -1,8 +1,9 @@
 package TidyTestUtils;
 
-use 5.010001;
+use 5.020000;
 use warnings;
 use strict;
+use experimental 'signatures';
 
 use Test::More;
 
@@ -22,14 +23,19 @@ sub remove_specificity {
     return $clean;
 }
 
-sub messages_are {
+
+sub messages_are( $tidy, $exp, $msg = undef ) {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
-    my $tidy     = shift;
-    my $expected = shift;
-    my $msg      = shift;
+    my $got = [ map { $_->as_string } $tidy->messages ];
+    my $ok = is_deeply( $got, $exp, $msg );
+    if ( !$ok ) {
+        diag(explain($got));
+        diag(explain($exp));
+    }
 
-    return is_deeply( [ map { $_->as_string } $tidy->messages ], $expected, $msg );
+    return $ok;
 }
+
 
 1;

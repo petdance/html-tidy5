@@ -26,7 +26,16 @@ my $clean = $tidy->clean( $html );
 $tidy = HTML::Tidy5->new($args); # reset messages;
 $tidy->ignore( type => TIDY_INFO );
 $clean = $tidy->clean($clean);
-my @messages = $tidy->messages( $clean );
+my @messages = $tidy->messages();
+
+if ( @messages ) {
+    # tidy makes a <title> tag for us, but it's blank, which is non-tidy.
+    # https://github.com/htacg/tidy-html5/issues/1122
+    # Here the Perl code allows for that.
+    if ( $messages[0]->text eq "blank 'title' element" ) {
+        shift @messages;
+    }
+}
 
 is_deeply( \@messages, [], q{The cleaned stuff shouldn't have any errors} );
 

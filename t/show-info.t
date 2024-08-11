@@ -16,7 +16,7 @@ my $html = <<'HTML';
 <!DOCTYPE html>
 <html>
     <head>
-        <title></title>
+        <title>non-empty</title>
     </head>
     <body id=foo>
     </body>

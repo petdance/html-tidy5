@@ -3,6 +3,13 @@ Revision history for Perl extension HTML::Tidy5.
 The HTML::Tidy5 module is an HTML5-compatible upgrade from the HTML::Tidy
 module.
 
+2.0.0
+====================================
+Requires Perl 5.20.0 and tidy-html 5.8.0.
+
+tidy-html 5.8.0 now warns if the <title> tag is empty, so HTML::Tidy5 does,
+too.
+
 
 1.06    Sat Oct 26 14:35:44 CDT 2019
 ====================================

@@ -1,8 +1,9 @@
 package HTML::Tidy5::Message;
 
-use 5.010001;
+use 5.020000;
 use warnings;
 use strict;
+use experimental 'signatures';
 
 =head1 NAME
 
@@ -24,15 +25,7 @@ C<$file> can be C<undef> or an empty string, in which case it will not appear in
 
 =cut
 
-sub new {
-    my $class  = shift;
-
-    my $file   = shift;
-    my $type   = shift;
-    my $line   = shift || 0;
-    my $column = shift || 0;
-    my $text   = shift;
-
+sub new( $class, $file, $type, $line, $column, $text ) {
     # Add an element that says what tag caused the error (B, TR, etc)
     # so that we can match 'em up down the road.
     my $self  = {
@@ -48,15 +41,14 @@ sub new {
     return $self;
 }
 
+
 =head2 as_string()
 
 Returns a nicely-formatted string for printing out to stdout or some similar user thing.
 
 =cut
 
-sub as_string {
-    my $self = shift;
-
+sub as_string( $self ) {
     my %strings = (
         1 => 'Info',
         2 => 'Warning',
@@ -76,6 +68,7 @@ sub as_string {
 
     return $msg;
 }
+
 
 =head2 file()
 
@@ -103,16 +96,16 @@ like "Info: ".
 
 =cut
 
-sub file    { my $self = shift; return $self->{_file} }
-sub type    { my $self = shift; return $self->{_type} }
-sub line    { my $self = shift; return $self->{_line} }
-sub column  { my $self = shift; return $self->{_column} }
-sub text    { my $self = shift; return $self->{_text} }
+sub file( $self )   { return $self->{_file} }
+sub type( $self )   { return $self->{_type} }
+sub line( $self )   { return $self->{_line} }
+sub column( $self ) { return $self->{_column} }
+sub text( $self )   { return $self->{_text} }
 
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2005-2018 Andy Lester.
+Copyright 2005-2024 Andy Lester.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the Artistic License v2.0.
@@ -122,5 +115,6 @@ it under the terms of the Artistic License v2.0.
 Andy Lester, C<< <andy@petdance.com> >>
 
 =cut
+
 
 1; # happy

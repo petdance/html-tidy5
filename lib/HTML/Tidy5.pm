@@ -1,9 +1,10 @@
 package HTML::Tidy5;
 
-use 5.010001;
+use 5.020000;
 use strict;
 use warnings;
 use Carp ();
+use experimental 'signatures';
 
 use HTML::Tidy5::Message;
 
@@ -87,9 +88,7 @@ The following options are not supported by C<HTML::Tidy5>:
 
 =cut
 
-sub new {
-    my $class = shift;
-    my $args = shift || {};
+sub new( $class, $args = {} ) {
     my @unsupported_options = qw(
         force-output
         gnu-emacs-file
@@ -127,17 +126,17 @@ sub new {
     return $self;
 }
 
+
 =head2 messages()
 
 Returns the messages accumulated.
 
 =cut
 
-sub messages {
-    my $self = shift;
-
+sub messages( $self ) {
     return @{$self->{messages}};
 }
+
 
 =head2 clear_messages()
 
@@ -147,13 +146,12 @@ L<parse()|parse( $filename, $str [, $str...] )> you'll be accumulating more in t
 
 =cut
 
-sub clear_messages {
-    my $self = shift;
-
+sub clear_messages( $self ) {
     $self->{messages} = [];
 
     return;
 }
+
 
 =head2 ignore( parm => value [, parm => value ] )
 
@@ -186,10 +184,7 @@ parm may be either a regex, or a reference to a list of regexes.
 
 =cut
 
-sub ignore {
-    my $self = shift;
-    my @parms = @_;
-
+sub ignore( $self, @parms ) {
     while ( @parms ) {
         my $parm = shift @parms;
         my $value = shift @parms;
@@ -202,7 +197,8 @@ sub ignore {
     } # while
 
     return;
-} # ignore
+}
+
 
 =head2 parse( $filename, $str [, $str...] )
 
@@ -216,13 +212,11 @@ tidy, or parsing tidy's output.
 
 =cut
 
-sub parse {
-    my $self = shift;
-    my $filename = shift;
-    if (@_ == 0) {
+sub parse( $self, $filename, @strings ) {
+    if (@strings == 0) {
         Carp::croak('Usage: parse($filename,$str [, $str...])');
     }
-    my $html = join( '', @_ );
+    my $html = join( '', @strings );
 
     utf8::encode($html) if utf8::is_utf8($html);
     my ($errorblock,$newline) = _tidy_messages( $html, $self->{config_file}, $self->{tidy_options} );
@@ -233,12 +227,8 @@ sub parse {
     return !$self->_parse_errors($filename, $errorblock, $newline);
 }
 
-sub _parse_errors {
-    my $self = shift;
-    my $filename = shift;
-    my $errs = shift;
-    my $newline = shift;
 
+sub _parse_errors( $self, $filename, $errs, $newline ) {
     my $parse_errors;
 
     my @lines = split( /$newline/, $errs );
@@ -291,6 +281,7 @@ sub _parse_errors {
     return $parse_errors;
 }
 
+
 =head2 clean( $str [, $str...] )
 
 Cleans a string, or list of strings, that make up a single HTML file.
@@ -299,13 +290,11 @@ Returns the cleaned string as a single string.
 
 =cut
 
-sub clean {
-    my $self = shift;
-
-    if (@_ == 0) {
+sub clean( $self, @strings ) {
+    if (@strings == 0) {
         Carp::croak('Usage: clean($str [, $str...])');
     }
-    my $text = join( '', @_ );
+    my $text = join( '', @strings );
 
     utf8::encode($text) if utf8::is_utf8($text);
     if ( defined $text ) {
@@ -322,13 +311,10 @@ sub clean {
     return $cleaned;
 }
 
+
 # Tells whether a given message object is one that we should keep.
 
-sub _is_keeper {
-    my $self = shift;
-
-    my $message = shift;
-
+sub _is_keeper( $self, $message ) {
     my @ignore_types = @{$self->{ignore_type}};
     if ( @ignore_types ) {
         return 0 if grep { $message->type == $_ } @ignore_types;
@@ -342,17 +328,19 @@ sub _is_keeper {
     return 1;
 }
 
+
 =head2 tidy_library_version()
 
 Returns the version of the underling tidy library.
 
 =cut
 
-sub tidy_library_version {
+sub tidy_library_version( $self ) {
     my $version_str = _tidy_library_version();
 
     return $version_str;
 }
+
 
 require XSLoader;
 XSLoader::load('HTML::Tidy5', $VERSION);
@@ -442,7 +430,7 @@ Andy Lester, C<< <andy at petdance.com> >>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright (C) 2005-2018 by Andy Lester
+Copyright (C) 2005-2024 by Andy Lester
 
 This library is free software.  You may modify or distribute it under
 the Artistic License v2.0.
