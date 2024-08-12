@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use 5.010001;
+use 5.20.3;
 use Test::More;
 
 use Test::Pod 1.14;

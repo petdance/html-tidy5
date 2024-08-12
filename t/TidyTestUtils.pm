@@ -1,6 +1,6 @@
 package TidyTestUtils;
 
-use 5.020000;
+use 5.20.3;
 use warnings;
 use strict;
 use experimental 'signatures';
@@ -13,11 +13,10 @@ our @EXPORT_OK = qw(
     remove_specificity
     messages_are
 );
+
 our @EXPORT = @EXPORT_OK;
 
-sub remove_specificity {
-    my $clean = shift;
-
+sub remove_specificity( $clean ) {
     $clean =~ s/HTML Tidy for HTML5 (for .+ )?\bversion \d+\.\d+\.\d+/TIDY/;
 
     return $clean;

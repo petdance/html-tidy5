@@ -1,6 +1,6 @@
 #!perl -T
 
-use 5.010001;
+use 5.20.3;
 use warnings;
 use strict;
 
@@ -67,3 +67,4 @@ my @result = split(/\r/, $result);
 
 is_deeply( \@result, \@expected, 'Cleaned stuff looks like what we expected');
 
+exit 0;

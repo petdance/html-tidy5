@@ -1,8 +1,6 @@
 #!/usr/bin/perl
 
-package main;
-
-use 5.010001;
+use 5.20.3;
 use strict;
 use warnings;
 use ExtUtils::MakeMaker 6.48;
@@ -37,7 +35,7 @@ my $parms = {
         'constant'        => 0,
     },
 
-    MIN_PERL_VERSION    => 5.010001,
+    MIN_PERL_VERSION    => 5.020003,
     LICENSE             => 'artistic_2',
     META_MERGE => {
         resources => {

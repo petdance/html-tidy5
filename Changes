@@ -5,7 +5,7 @@ module.
 
 2.0.0
 ====================================
-Requires Perl 5.20.0 and tidy-html 5.8.0.
+Requires Perl 5.20.3 and tidy-html 5.8.0.
 
 tidy-html 5.8.0 now warns if the <title> tag is empty, so HTML::Tidy5 does,
 too.

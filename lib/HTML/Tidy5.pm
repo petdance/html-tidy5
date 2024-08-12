@@ -1,10 +1,12 @@
 package HTML::Tidy5;
 
-use 5.020000;
+use 5.20.3;
 use strict;
 use warnings;
-use Carp ();
 use experimental 'signatures';
+use experimental 'postderef';
+
+use Carp ();
 
 use HTML::Tidy5::Message;
 
@@ -134,7 +136,7 @@ Returns the messages accumulated.
 =cut
 
 sub messages( $self ) {
-    return @{$self->{messages}};
+    return $self->{messages}->@*;
 }
 
 
@@ -188,12 +190,12 @@ sub ignore( $self, @parms ) {
     while ( @parms ) {
         my $parm = shift @parms;
         my $value = shift @parms;
-        my @values = ref($value) eq 'ARRAY' ? @{$value} : ($value);
+        my @values = ref($value) eq 'ARRAY' ? $value->@* : ($value);
 
         Carp::croak( qq{Invalid ignore type of "$parm"} )
             unless ($parm eq 'text') or ($parm eq 'type');
 
-        push( @{$self->{"ignore_$parm"}}, @values );
+        push( $self->{"ignore_$parm"}->@*, @values );
     } # while
 
     return;
@@ -275,7 +277,7 @@ sub _parse_errors( $self, $filename, $errs, $newline ) {
             Carp::carp "HTML::Tidy5: Unknown error type: $line";
             ++$parse_errors;
         }
-        push( @{$self->{messages}}, $message )
+        push( $self->{messages}->@*, $message )
             if $message && $self->_is_keeper( $message );
     } # for
     return $parse_errors;
@@ -315,12 +317,12 @@ sub clean( $self, @strings ) {
 # Tells whether a given message object is one that we should keep.
 
 sub _is_keeper( $self, $message ) {
-    my @ignore_types = @{$self->{ignore_type}};
+    my @ignore_types = $self->{ignore_type}->@*;
     if ( @ignore_types ) {
         return 0 if grep { $message->type == $_ } @ignore_types;
     }
 
-    my @ignore_texts = @{$self->{ignore_text}};
+    my @ignore_texts = $self->{ignore_text}->@*;
     if ( @ignore_texts ) {
         return 0 if grep { $message->text =~ $_ } @ignore_texts;
     }

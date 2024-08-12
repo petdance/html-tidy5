@@ -1,6 +1,6 @@
 #!perl -T
 
-use 5.010001;
+use 5.20.3;
 use strict;
 use warnings;
 
@@ -12,7 +12,7 @@ use Test::HTML::Tidy5;
 
 diag( "Testing HTML::Tidy5 $HTML::Tidy5::VERSION, tidy library version " . HTML::Tidy5->tidy_library_version() . ", Perl $], $^X" );
 
-cmp_ok( HTML::Tidy5->tidy_library_version, 'ge', '5.6.0', 'HTML::Tidy5 requires version 5.6.0 or higher of the tidy-html5 library' );
+cmp_ok( HTML::Tidy5->tidy_library_version, 'ge', '5.8.0', 'HTML::Tidy5 requires version 5.8.0 or higher of the tidy-html5 library' );
 
 is( $Test::HTML::Tidy5::VERSION, $HTML::Tidy5::VERSION, 'HTML::Tidy5 and Test::HTML::Tidy5 versions must match' );
 

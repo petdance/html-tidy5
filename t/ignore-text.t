@@ -1,8 +1,10 @@
 #!perl -T
 
-use 5.010001;
+use 5.20.3;
 use warnings;
 use strict;
+use experimental 'signatures';
+use experimental 'postderef';
 
 use Test::More tests => 3;
 
@@ -34,12 +36,9 @@ IGNORE_BOGOTAG: {
     is_deeply( \@returned, \@expected_messages, 'Matching warnings' );
 }
 
-sub munge_returned {
+sub munge_returned( $returned, $start_line ) {
     # non-1 line numbers are not reliable across libtidies
-    my $returned = shift;
-    my $start_line = shift || '-';
-
-    for my $line ( @{$returned} ) {
+    for my $line ( $returned->@* ) {
         next if $line =~ m/$start_line \(\d+:1\)/;
         $line =~ s/$start_line \((\d+):(\d+)\)/$start_line ($1:XX)/;
     }

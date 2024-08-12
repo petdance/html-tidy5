@@ -1,6 +1,6 @@
 package HTML::Tidy5::Message;
 
-use 5.020000;
+use 5.20.3;
 use warnings;
 use strict;
 use experimental 'signatures';

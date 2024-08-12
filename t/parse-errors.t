@@ -1,8 +1,9 @@
 #!/usr/bin/perl -T
 
-use 5.010001;
+use 5.20.3;
 use strict;
 use warnings;
+use experimental 'postderef';
 
 use Test::Exception;
 use Test::More tests => 4;
@@ -20,7 +21,7 @@ CATCH_A_WARNING: {
 
     my $ret = $tidy->_parse_errors('fake_filename.html', $errbuf, "\n");
     is( $ret, 1, 'encountered 1 parsing error' );
-    is( scalar @{$tidy->{messages}},  7, 'got 7 messages when parsing errors' );
+    is( scalar $tidy->{messages}->@*,  7, 'Got 7 messages when parsing errors' );
 
     # Check our warnings.
     is( $ncalls, 1, 'Warning should have been called exactly once' );

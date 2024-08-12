@@ -1,8 +1,9 @@
 package Test::HTML::Tidy5;
 
-use 5.010001;
+use 5.20.3;
 use warnings;
 use strict;
+use experimental 'signatures';
 
 use Test::Builder;
 use Exporter;
@@ -54,12 +55,10 @@ C<html_tidy_ok>
 
 =cut
 
-sub import {
-    my $self = shift;
-    my $pack = caller;
-
-    $TB->exported_to($pack);
-    $TB->plan(@_);
+sub import( $self, @args ) {
+    my $package = shift @args;
+    $TB->exported_to($package);
+    $TB->plan(@args);
 
     $self->export_to_level(1, $self, @EXPORT);
 
@@ -141,13 +140,8 @@ HTML
 }
 
 
-sub _parse_and_complain {
+sub _parse_and_complain( $tidy, $html, $name, $offset ) {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-
-    my $tidy   = shift;
-    my $html   = shift;
-    my $name   = shift;
-    my $offset = shift;
 
     $tidy->clear_messages();
     $tidy->parse( undef, $html );
@@ -183,7 +177,7 @@ DO NOT send bug reports to http://rt.cpan.org/.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2005-2018 Andy Lester.
+Copyright 2005-2024 Andy Lester.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the Artistic License v2.0.

@@ -1,8 +1,10 @@
 #!perl -T
 
-use 5.010001;
+use 5.20.3;
 use warnings;
 use strict;
+use experimental 'signatures';
+use experimental 'postderef';
 
 use Test::More tests => 3;
 
@@ -29,12 +31,14 @@ s/[\r\n]+\z// for @messages;
 munge_returned( \@messages );
 is_deeply( \@messages, \@expected, 'Matching messages' );
 
-sub munge_returned {
-    # non-1 line numbers are not reliable across libtidies
-    my $returned = shift;
-    my $start_line = shift || '-';
+exit 0;
 
-    for my $line ( @{$returned} ) {
+
+sub munge_returned( $returned ) {
+    # non-1 line numbers are not reliable across libtidies
+    my $start_line = '-';
+
+    for my $line ( $returned->@* ) {
         next if $line =~ /$start_line \(\d+:1\)/;
         $line =~ s/$start_line \((\d+):(\d+)\)/$start_line ($1:XX)/;
     }

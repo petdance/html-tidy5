@@ -1,6 +1,6 @@
 #!/usr/bin/perl -T
 
-use 5.010001;
+use 5.20.3;
 use strict;
 use warnings;
 

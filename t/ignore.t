@@ -1,8 +1,9 @@
 #!perl -T
 
-use 5.010001;
+use 5.20.3;
 use strict;
 use warnings;
+use experimental 'signatures';
 
 use Test::More tests => 9;
 
@@ -63,12 +64,11 @@ DIES_ON_ERROR: {
     like( $@, qr/^Invalid ignore type.+blongo/, 'Throws an error' );
 }
 
-sub munge_returned {
+sub munge_returned( $returned ) {
     # non-1 line numbers are not reliable across libtidies
-    my $returned = shift;
-    my $start_line = shift || '-';
+    my $start_line = '-';
 
-    for my $line ( @{$returned} ) {
+    for my $line ( $returned->@* ) {
         next if $line =~ /$start_line \(\d+:1\)/;
         $line =~ s/$start_line \((\d+):(\d+)\)/$start_line ($1:XX)/;
     }
