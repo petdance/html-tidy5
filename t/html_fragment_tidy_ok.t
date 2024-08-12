@@ -24,6 +24,8 @@ subtest 'html_fragment_tidy_ok fails on undef' => sub {
 subtest 'html_tidy_ok fails on a fragment, but html_fragment_tidy_ok is OK' => sub {
     plan tests => 2;
 
+    local $TODO = 'html-tidy makes a <title> tag that is empty, which is non-tidy.';
+
     my $html = <<'HTML';
 <p>
     This is an incomplete document but it's structurally OK.
@@ -33,6 +35,7 @@ subtest 'html_tidy_ok fails on a fragment, but html_fragment_tidy_ok is OK' => s
 HTML
 
     my $msg = 'Called html_tidy_ok on incomplete document';
+
     test_out( "not ok 1 - $msg" );
     test_fail( +6 );
     test_diag( "Errors: $msg" );
@@ -76,11 +79,12 @@ HTML
     # Note that the line numbers are the same between html_tidy_ok and html_fragment_tidy_ok.
     $msg = 'html_fragment_tidy_ok on sloppy doc';
     test_out( "not ok 1 - $msg" );
-    test_fail( +5 );
+    test_fail( +6 );
     test_diag( "Errors: $msg" );
     test_diag( '(2:59) Warning: discarding unexpected </td>' );
+    test_diag( '(-2:9) Warning: blank \'title\' element' );
     test_diag( '(3:5) Warning: <img> lacks "alt" attribute' );
-    test_diag( '2 messages on the page' );
+    test_diag( '3 messages on the page' );
     html_fragment_tidy_ok( $html, $msg );
     test_test( $msg );
 };

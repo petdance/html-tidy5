@@ -29,7 +29,7 @@ subtest 'html_tidy_ok without errors' => sub {
 <!DOCTYPE html>
 <html>
     <head>
-        <title> </title>
+        <title> html_tidy_ok without errors </title>
     </head>
     <body>
         <p>
@@ -80,7 +80,7 @@ subtest 'Test passing our own Tidy object' => sub {
 <!DOCTYPE html>
 <html>
     <head>
-        <title> </title>
+        <title> Passing our own Tidy object </title>
     </head>
     <body>
         <p>

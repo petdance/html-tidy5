@@ -3,6 +3,8 @@
 use 5.010001;
 use warnings;
 use strict;
+use experimental 'signatures';
+use experimental 'postderef';
 
 use Test::More tests => 8;
 
@@ -46,8 +48,8 @@ WITHOUT_LINE_NUMBERS_WITH_FILENAME: {
     my %expected = (
         file        => 'bar.pl',
         type        => TIDY_WARNING,
-        line        => 0,
-        column      => 0,
+        line        => undef,
+        column      => undef,
         text        => 'Blah blah',
         as_string   => 'bar.pl Warning: Blah blah',
     );
@@ -61,8 +63,8 @@ WITHOUT_LINE_NUMBERS_WITHOUT_FILENAME: {
     my %expected = (
         file        => undef,
         type        => TIDY_WARNING,
-        line        => 0,
-        column      => 0,
+        line        => undef,
+        column      => undef,
         text        => 'Blah blah',
         as_string   => 'Warning: Blah blah',
     );
@@ -70,18 +72,14 @@ WITHOUT_LINE_NUMBERS_WITHOUT_FILENAME: {
 }
 
 
-sub _match_up {
+sub _match_up( $error, $exp, $msg ) {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
-    my $error    = shift;
-    my $expected = shift;
-    my $msg      = shift or die;
-
     return subtest "_matchup( $msg )" => sub {
-        plan tests => scalar keys %{$expected};
+        plan tests => scalar keys $exp->%*;
 
-        for my $what ( sort keys %{$expected} ) {
-            is( $error->$what, $expected->{$what}, "$what matches" );
+        for my $what ( sort keys $exp->%* ) {
+            is( $error->$what, $exp->{$what}, "$what matches" );
         }
     };
 }

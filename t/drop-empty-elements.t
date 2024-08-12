@@ -16,7 +16,7 @@ my $html = <<'HTML';
 <!DOCTYPE html>
 <html>
     <head>
-        <title></title>
+        <title> Non-empty </title>
     </head>
     <body>
         <span class="empty"></span>
