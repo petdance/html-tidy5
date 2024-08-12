@@ -403,19 +403,15 @@ You can also look for information at:
 
 =item * HTML::Tidy5's issue queue at github
 
-L<http://github.com/petdance/html-tidy5/issues>
+L<https://github.com/petdance/html-tidy5/issues>
 
-=item * CPAN Ratings
+=item * MetaCPAN
 
-L<http://cpanratings.perl.org/d/HTML-Tidy5>
-
-=item * search.cpan.org
-
-L<http://search.cpan.org/dist/HTML-Tidy5>
+L<https://metacpan.org/pod/HTML::Tidy5>
 
 =item * Git source code repository
 
-L<http://github.com/petdance/html-tidy5>
+L<https://github.com/petdance/html-tidy5>
 
 =back
 
